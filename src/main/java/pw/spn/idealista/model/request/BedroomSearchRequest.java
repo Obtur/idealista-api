@@ -1,5 +1,8 @@
 package pw.spn.idealista.model.request;
 
+import java.util.Arrays;
+import okhttp3.HttpUrl;
+import pw.spn.idealista.RequestParameter;
 import pw.spn.idealista.exception.InvalidRequestException;
 import pw.spn.idealista.model.bedroom.BedroomAmenity;
 import pw.spn.idealista.model.bedroom.OwnerSex;
@@ -7,7 +10,7 @@ import pw.spn.idealista.model.common.PropertyType;
 
 public class BedroomSearchRequest extends AbstractIdealistaSearchRequest {
 
-    private BedroomAmenity[] bedroomAmenities;
+    private BedroomAmenity[] amenities;
     private OwnerSex sex = OwnerSex.INDIFFERENT;
     private int housemates;
 
@@ -23,12 +26,26 @@ public class BedroomSearchRequest extends AbstractIdealistaSearchRequest {
         return PropertyType.BEDROOMS;
     }
 
-    public BedroomAmenity[] getBedroomAmenities() {
-        return bedroomAmenities;
+    @Override
+    void buildURLInternal(HttpUrl.Builder builder) {
+        if (amenities != null) {
+            Arrays.stream(amenities).forEach(amenity -> builder.addQueryParameter(amenity.getName(),
+                    String.valueOf(amenity.getValue())));
+        }
+        if (sex != null) {
+            builder.addQueryParameter(RequestParameter.SEX, sex.getValue());
+        }
+        if (housemates != 0) {
+            builder.addQueryParameter(RequestParameter.HOUSEMATES, String.valueOf(housemates));
+        }
     }
 
-    public void setBedroomAmenities(BedroomAmenity[] bedroomAmenities) {
-        this.bedroomAmenities = bedroomAmenities;
+    public BedroomAmenity[] getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(BedroomAmenity[] amenities) {
+        this.amenities = amenities;
     }
 
     public OwnerSex getSex() {
@@ -46,4 +63,5 @@ public class BedroomSearchRequest extends AbstractIdealistaSearchRequest {
     public void setHousemates(int housemates) {
         this.housemates = housemates;
     }
+
 }

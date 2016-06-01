@@ -1,6 +1,9 @@
 package pw.spn.idealista.model.request;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import okhttp3.HttpUrl;
+import pw.spn.idealista.RequestParameter;
 import pw.spn.idealista.exception.InvalidRequestException;
 import pw.spn.idealista.model.common.PropertyType;
 import pw.spn.idealista.model.home.FurnishedType;
@@ -34,6 +37,32 @@ public class HomeSearchRequest extends AbstractIdealistaSearchRequest {
     @Override
     public PropertyType getPropertyType() {
         return PropertyType.HOMES;
+    }
+
+    @Override
+    void buildURLInternal(HttpUrl.Builder builder) {
+        if (homeTypes != null) {
+            Arrays.stream(homeTypes).forEach(type -> builder.addQueryParameter(type.getValue(), "true"));
+        }
+        if (bedrooms != null) {
+            builder.addQueryParameter(RequestParameter.BEDROOMS, arrayToString(bedrooms));
+        }
+        if (bathrooms != null) {
+            builder.addQueryParameter(RequestParameter.BATHROOMS, arrayToString(bathrooms));
+        }
+        if (amenities != null) {
+            Arrays.stream(amenities).forEach(amenity -> builder.addQueryParameter(amenity.getValue(), "true"));
+        }
+        if (furnishedType != null) {
+            builder.addQueryParameter(RequestParameter.FURNISHED, furnishedType.getValue());
+        }
+        if (homeStatus != null) {
+            builder.addQueryParameter(RequestParameter.STATUS, homeStatus.getValue());
+        }
+    }
+
+    private String arrayToString(int[] array) {
+        return Arrays.stream(array).boxed().map(i -> i.toString()).collect(Collectors.joining(","));
     }
 
     public HomeType[] getHomeTypes() {

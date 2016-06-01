@@ -1,5 +1,8 @@
 package pw.spn.idealista.model.request;
 
+import java.util.Arrays;
+import okhttp3.HttpUrl;
+import pw.spn.idealista.RequestParameter;
 import pw.spn.idealista.exception.InvalidRequestException;
 import pw.spn.idealista.model.common.PropertyType;
 import pw.spn.idealista.model.office.OfficeAmenity;
@@ -8,9 +11,9 @@ import pw.spn.idealista.model.office.OfficeLayout;
 
 public class OfficeSearchRequest extends AbstractIdealistaSearchRequest {
 
-    private OfficeAmenity[] officeAmenities;
-    private OfficeLayout officeLayout;
-    private OfficeBuildingType officeBuildingType;
+    private OfficeAmenity[] amenities;
+    private OfficeLayout layout;
+    private OfficeBuildingType buildingType;
 
     @Override
     void validateInternal() throws InvalidRequestException {
@@ -21,28 +24,41 @@ public class OfficeSearchRequest extends AbstractIdealistaSearchRequest {
         return PropertyType.OFFICES;
     }
 
-    public OfficeAmenity[] getOfficeAmenities() {
-        return officeAmenities;
+    @Override
+    void buildURLInternal(HttpUrl.Builder builder) {
+        if (amenities != null) {
+            Arrays.stream(amenities).forEach(amenity -> builder.addQueryParameter(amenity.getValue(), "true"));
+        }
+        if (layout != null) {
+            builder.addQueryParameter(RequestParameter.LAYOUT, layout.getValue());
+        }
+        if (buildingType != null) {
+            builder.addQueryParameter(RequestParameter.TYPE_BUILDING, buildingType.getValue());
+        }
     }
 
-    public void setOfficeAmenities(OfficeAmenity[] officeAmenities) {
-        this.officeAmenities = officeAmenities;
+    public OfficeAmenity[] getAmenities() {
+        return amenities;
     }
 
-    public OfficeLayout getOfficeLayout() {
-        return officeLayout;
+    public void setAmenities(OfficeAmenity[] amenities) {
+        this.amenities = amenities;
     }
 
-    public void setOfficeLayout(OfficeLayout officeLayout) {
-        this.officeLayout = officeLayout;
+    public OfficeLayout getLayout() {
+        return layout;
     }
 
-    public OfficeBuildingType getOfficeBuildingType() {
-        return officeBuildingType;
+    public void setLayout(OfficeLayout layout) {
+        this.layout = layout;
     }
 
-    public void setOfficeBuildingType(OfficeBuildingType officeBuildingType) {
-        this.officeBuildingType = officeBuildingType;
+    public OfficeBuildingType getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(OfficeBuildingType buildingType) {
+        this.buildingType = buildingType;
     }
 
 }

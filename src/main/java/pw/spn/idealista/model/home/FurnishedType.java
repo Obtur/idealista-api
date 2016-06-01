@@ -1,5 +1,17 @@
 package pw.spn.idealista.model.home;
 
 public enum FurnishedType {
-    FURNISHED, NOT_FURNISHED, ONLY_KITCHEN;
+    FURNISHED("yes"),
+    NOT_FURNISHED("no"),
+    ONLY_KITCHEN("onlyKitchen");
+
+    private final String value;
+
+    FurnishedType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

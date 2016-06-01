@@ -1,12 +1,14 @@
 package pw.spn.idealista.model.request;
 
+import java.util.Arrays;
+import okhttp3.HttpUrl;
 import pw.spn.idealista.exception.InvalidRequestException;
 import pw.spn.idealista.model.common.PropertyType;
 import pw.spn.idealista.model.garage.GarageAmenity;
 
 public class GarageSearchRequest extends AbstractIdealistaSearchRequest {
 
-    private GarageAmenity[] garageAmenities;
+    private GarageAmenity[] amenities;
 
     @Override
     void validateInternal() throws InvalidRequestException {
@@ -17,11 +19,18 @@ public class GarageSearchRequest extends AbstractIdealistaSearchRequest {
         return PropertyType.GARAGES;
     }
 
-    public GarageAmenity[] getGarageAmenities() {
-        return garageAmenities;
+    @Override
+    void buildURLInternal(HttpUrl.Builder builder) {
+        if (amenities != null) {
+            Arrays.stream(amenities).forEach(amenity -> builder.addQueryParameter(amenity.getValue(), "true"));
+        }
     }
 
-    public void setGarageAmenities(GarageAmenity[] garageAmenities) {
-        this.garageAmenities = garageAmenities;
+    public GarageAmenity[] getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(GarageAmenity[] amenities) {
+        this.amenities = amenities;
     }
 }

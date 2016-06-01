@@ -1,5 +1,7 @@
 package pw.spn.idealista.model.request;
 
+import okhttp3.HttpUrl;
+import pw.spn.idealista.RequestParameter;
 import pw.spn.idealista.exception.InvalidRequestException;
 import pw.spn.idealista.model.common.DateInterval;
 import pw.spn.idealista.model.common.Location;
@@ -32,9 +34,38 @@ public abstract class AbstractIdealistaSearchRequest {
         validateInternal();
     }
 
+    abstract void validateInternal() throws InvalidRequestException;
+
     public abstract PropertyType getPropertyType();
 
-    abstract void validateInternal() throws InvalidRequestException;
+    public void buildURL(HttpUrl.Builder builder) {
+        builder.addQueryParameter(RequestParameter.PROPERTY_TYPE, getPropertyType().name().toLowerCase());
+        builder.addQueryParameter(RequestParameter.OPERATION, operationType.getCode());
+        builder.addQueryParameter(RequestParameter.CENTER, location.getLatitude() + "," + location.getLongitude());
+        builder.addQueryParameter(RequestParameter.DISTANCE, String.valueOf(location.getDistance()));
+        builder.addQueryParameter(RequestParameter.NUM_PAGE, String.valueOf(numPage));
+        builder.addQueryParameter(RequestParameter.MAX_ITEMS, String.valueOf(maxItems));
+
+        builder.addQueryParameter(RequestParameter.MIN_PRICE, String.valueOf(minPrice));
+        builder.addQueryParameter(RequestParameter.MAX_PRICE, String.valueOf(maxPrice));
+        builder.addQueryParameter(RequestParameter.MIN_SIZE, String.valueOf(minSize));
+        builder.addQueryParameter(RequestParameter.MAX_SIZE, String.valueOf(maxSize));
+        if (sortOrder != null) {
+            builder.addQueryParameter(RequestParameter.ORDER, sortOrder.getValue());
+        }
+        if (sortType != null) {
+            builder.addQueryParameter(RequestParameter.SORT, sortType.getValue());
+        }
+        if (dateInterval != null) {
+            builder.addQueryParameter(RequestParameter.SINCE_DATE, dateInterval.getValue());
+        }
+        builder.addQueryParameter(RequestParameter.PICTURES, String.valueOf(onlyWithPictures));
+        builder.addQueryParameter(RequestParameter.PROFESSIONAL_VIDEO, String.valueOf(onlyWithProfessionalVideo));
+
+        buildURLInternal(builder);
+    }
+
+    abstract void buildURLInternal(HttpUrl.Builder builder);
 
     public OperationType getOperationType() {
         return operationType;
