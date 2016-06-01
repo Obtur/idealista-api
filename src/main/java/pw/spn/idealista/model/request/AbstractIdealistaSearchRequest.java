@@ -13,6 +13,7 @@ public abstract class AbstractIdealistaSearchRequest {
     private OperationType operationType;
     private Location location;
 
+    private int numPage = 1;
     private int maxItems = 50;
     private int minPrice = 0;
     private int maxPrice = Integer.MAX_VALUE;
@@ -49,6 +50,14 @@ public abstract class AbstractIdealistaSearchRequest {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public int getNumPage() {
+        return numPage;
+    }
+
+    public void setNumPage(int numPage) {
+        this.numPage = numPage;
     }
 
     public int getMaxItems() {

@@ -1,6 +1,7 @@
 package pw.spn.idealista;
 
-import pw.spn.idealista.model.IdealistaSearchResponse;
+import pw.spn.idealista.exception.InvalidRequestException;
+import pw.spn.idealista.model.response.IdealistaSearchResponse;
 import pw.spn.idealista.model.request.AbstractIdealistaSearchRequest;
 
 public class Idealista {
@@ -11,15 +12,15 @@ public class Idealista {
         this.apiKey = apiKey;
     }
 
-    public IdealistaSearchResponse search(AbstractIdealistaSearchRequest searchRequest) {
+    public IdealistaSearchResponse search(AbstractIdealistaSearchRequest searchRequest) throws InvalidRequestException {
         validateRequest(searchRequest);
         waitIfNeed();
 
         return null;
     }
 
-    private void validateRequest(AbstractIdealistaSearchRequest searchRequest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void validateRequest(AbstractIdealistaSearchRequest searchRequest) throws InvalidRequestException {
+        searchRequest.validate();
     }
 
     private void waitIfNeed() {
