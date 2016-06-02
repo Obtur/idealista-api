@@ -15,7 +15,7 @@ import pw.spn.idealista.model.response.IdealistaSearchResponse;
 
 public class Idealista {
 
-    private static final HttpUrl API_ENDPOINT = HttpUrl.parse("http://www.idealista.com/labs/api/2/search");
+    private static final HttpUrl API_ENDPOINT = HttpUrl.parse("http://idealista-prod.apigee.net/public/2/search");
 
     private final String apiKey;
     private OkHttpClient httpClient;

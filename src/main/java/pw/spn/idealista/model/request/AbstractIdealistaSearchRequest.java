@@ -17,10 +17,10 @@ public abstract class AbstractIdealistaSearchRequest {
 
     private int numPage = 1;
     private int maxItems = 50;
-    private int minPrice = 0;
-    private int maxPrice = Integer.MAX_VALUE;
-    private int minSize = 0;
-    private int maxSize = Integer.MAX_VALUE;
+    private int minPrice;
+    private int maxPrice;
+    private int minSize;
+    private int maxSize;
     private SortOrder sortOrder = SortOrder.PRICE;
     private SortType sortType = SortType.ASC;
     private DateInterval dateInterval;
@@ -30,6 +30,30 @@ public abstract class AbstractIdealistaSearchRequest {
     public void validate() throws InvalidRequestException {
         if (location == null) {
             throw new InvalidRequestException("Location can not be empty");
+        }
+        if (operationType == null) {
+            throw new InvalidRequestException("Operation type can not be empty");
+        }
+        if (PropertyType.BEDROOMS == getPropertyType() && OperationType.BUY == operationType) {
+            throw new InvalidRequestException("Invalid operationType for bedrooms search");
+        }
+        if (numPage < 1) {
+            throw new InvalidRequestException("numPage must be greater than 0");
+        }
+        if (maxItems < 0) {
+            throw new InvalidRequestException("maxItems can not be negative");
+        }
+        if (minPrice < 0) {
+            throw new InvalidRequestException("minPrice can not be negative");
+        }
+        if (maxPrice < 0) {
+            throw new InvalidRequestException("maxPrice can not be negative");
+        }
+        if (minSize < 0) {
+            throw new InvalidRequestException("minSize can not be negative");
+        }
+        if (maxSize < 0) {
+            throw new InvalidRequestException("maxSize can not be negative");
         }
         validateInternal();
     }
@@ -43,13 +67,25 @@ public abstract class AbstractIdealistaSearchRequest {
         builder.addQueryParameter(RequestParameter.OPERATION, operationType.getCode());
         builder.addQueryParameter(RequestParameter.CENTER, location.getLatitude() + "," + location.getLongitude());
         builder.addQueryParameter(RequestParameter.DISTANCE, String.valueOf(location.getDistance()));
-        builder.addQueryParameter(RequestParameter.NUM_PAGE, String.valueOf(numPage));
-        builder.addQueryParameter(RequestParameter.MAX_ITEMS, String.valueOf(maxItems));
-
-        builder.addQueryParameter(RequestParameter.MIN_PRICE, String.valueOf(minPrice));
-        builder.addQueryParameter(RequestParameter.MAX_PRICE, String.valueOf(maxPrice));
-        builder.addQueryParameter(RequestParameter.MIN_SIZE, String.valueOf(minSize));
-        builder.addQueryParameter(RequestParameter.MAX_SIZE, String.valueOf(maxSize));
+        builder.addQueryParameter(RequestParameter.COUNTRY, location.getCountry().getValue());
+        if (numPage != 0) {
+            builder.addQueryParameter(RequestParameter.NUM_PAGE, String.valueOf(numPage));
+        }
+        if (maxItems != 0) {
+            builder.addQueryParameter(RequestParameter.MAX_ITEMS, String.valueOf(maxItems));
+        }
+        if (minPrice != 0) {
+            builder.addQueryParameter(RequestParameter.MIN_PRICE, String.valueOf(minPrice));
+        }
+        if (maxPrice != 0) {
+            builder.addQueryParameter(RequestParameter.MAX_PRICE, String.valueOf(maxPrice));
+        }
+        if (minSize != 0) {
+            builder.addQueryParameter(RequestParameter.MIN_SIZE, String.valueOf(minSize));
+        }
+        if (maxSize != 0) {
+            builder.addQueryParameter(RequestParameter.MAX_SIZE, String.valueOf(maxSize));
+        }
         if (sortOrder != null) {
             builder.addQueryParameter(RequestParameter.ORDER, sortOrder.getValue());
         }

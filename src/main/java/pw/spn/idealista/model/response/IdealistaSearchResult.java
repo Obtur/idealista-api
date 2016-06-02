@@ -19,7 +19,7 @@ public class IdealistaSearchResult {
     private int distance;
     private String district;
     private boolean exterior;
-    private int floor;
+    private String floor;
     private boolean hasVideo;
     private double latitude;
     private double longitude;
@@ -115,11 +115,11 @@ public class IdealistaSearchResult {
         this.exterior = exterior;
     }
 
-    public int getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(String floor) {
         this.floor = floor;
     }
 

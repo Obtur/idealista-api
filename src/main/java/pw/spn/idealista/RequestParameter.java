@@ -53,4 +53,5 @@ public interface RequestParameter {
     String SEX = "sex";
     String HOUSEMATES = "housemates";
     String NUM_PAGE = "numPage";
+    String COUNTRY = "country";
 }

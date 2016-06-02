@@ -3,7 +3,7 @@ package pw.spn.idealista.model.bedroom;
 public enum OwnerSex {
     MALE("M"),
     FEMALE("F"),
-    INDIFFERENT("I");
+    INDIFFERENT("X");
 
     private final String value;
 
