@@ -6,10 +6,12 @@ Current version 0.1.0 features:
   - search operations for all types of properties;
   - API requests-per-second limitation implementation;
   - sample API key provided for testing.
+
 TODO:
   - cover with more tests;
   - add another ways for location specification;
   - add user token support if possible.
+
 Usage:
 ```
 Idealista idealista = new Idealista(apiKey);
