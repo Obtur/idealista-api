@@ -2,7 +2,7 @@ package pw.spn.idealista.model.common;
 
 public enum Country {
     SPAIN("es"),
-    ITALY("id"),
+    ITALY("it"),
     PORTUGAL("pt");
 
     private final String value;
